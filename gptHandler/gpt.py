@@ -1,6 +1,5 @@
 from chat import ChatBot
 
-print("dada")
 basePrompt = """### Information ###
 You are in a location that is {location}. You are {role}.
 Around you there are: {objects}.
