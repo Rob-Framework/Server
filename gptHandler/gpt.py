@@ -16,6 +16,7 @@ Stop - stop
 Break - break
 
 ### Output ###
+Example Output: forward, left, right, stop, forward
 Task: {task}
 Output:"""
 
