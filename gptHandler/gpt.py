@@ -25,7 +25,8 @@ prompt = basePrompt.format(
     location="a forest",
     role="a hunter",
     objects="trees",
-    objectsInFromt="a deer"
+    objectsInFromt="a deer",
+    task="go to the deer"
 )
 
 resp = bot(prompt)
