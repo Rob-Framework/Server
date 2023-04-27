@@ -4,6 +4,7 @@ basePrompt = """### Information ###
 You are in a location that is {location}. You are {role}.
 Around you there are: {objects}.
 You can see: {objectsInFromt} in front of you.
+
 ### Actions ###
 You can:
 Function - Command Name
@@ -13,7 +14,10 @@ Move left - left
 Move right - right
 Stop - stop
 Break - break
-"""
+
+### Output ###
+Task: {task}
+Output:"""
 
 bot = ChatBot("")
 
