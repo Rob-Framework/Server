@@ -1,0 +1,2 @@
+def OnNewCroppedImages(images):
+    pass
