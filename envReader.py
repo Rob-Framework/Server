@@ -18,3 +18,11 @@ def getValue(key):
             return x['value']
     
     return ''
+
+def getBool(key):
+    value = getValue(key)
+    value = value.lower().strip()
+    if value == 'true':
+        return True
+    elif value == 'false':
+        return False
