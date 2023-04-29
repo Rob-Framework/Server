@@ -1,5 +1,11 @@
 # Server
 
+## How to run:
+* Clone the repository - `git clone https://github.com/Rob-Framework/Server`
+* Rename `.env.template` to `.env`
+* Setup the variables in the .env
+* Run `python main.py`
+
 ## Credits & Citations:
 Ultravision - YoloV8:
 ```
