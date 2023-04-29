@@ -7,8 +7,21 @@ def startConsoleListener():
 
 def consoleThread():
     while True:
-        inp = input("Enter command: ")
-        print(inp)
+        cmd = input("Enter command: ")
+        print(cmd)
 
-        data = json.dumps({ "command": inp })
+        data = ""
+        if cmd == "forward" or cmd == "backward" or cmd == "left" or cmd == "right" or cmd == "stop" or cmd == "break" or cmd == "slow_stop":
+            data = json.dumps({ "command": cmd })
+        elif data.startswith("move_hand"):
+            split = data.split(" ")
+            cmdObj = {
+                "command" : "move_hand",
+                "movement" : split[1],
+                "servo": split[2],
+            }
+            data = json.dumps(cmdObj)
+        else:
+            data = json.dumps({ "command": "" })
+
         send(data.encode())
