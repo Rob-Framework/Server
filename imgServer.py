@@ -3,6 +3,8 @@ import cv2
 import socket
 import pickle
 from handlers.vision_detector import getVisionDetector
+from envReader import getValue
+from mainLoop import Loop
 
 running = True
 client = None
@@ -14,14 +16,12 @@ def on_new_client(clientsocket,addr):
     print("Connected to: " + str(addr))
     while running:
         x = clientsocket.recvfrom(1000000)
-        clientip = x[1][0]
         data = x[0]
 
         if (len(data) == 0):
             continue
         try:
             data = pickle.loads(data)
-
 
             img = cv2.imdecode(data, cv2.IMREAD_COLOR)
             img = getVisionDetector().runDetector(img)
@@ -47,13 +47,14 @@ def send(msg):
 
 def initImgServer():
     s = socket.socket()
-    ip = "0.0.0.0"
-    port = 7777
+    ip = getValue("IP")
+    port = int(getValue("PORT"))
     s.bind((ip, port))
     s.listen(1)
     print("listening")
 
     while True:
+        Loop()
         c, addr = s.accept()   
         threading.Thread(target=on_new_client, args=(c,addr)).start()
         
