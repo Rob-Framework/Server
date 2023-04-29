@@ -72,7 +72,7 @@ class ObjectDetection:
         self.labels = [f"{self.CLASS_NAMES_DICT[class_id]} {confidence:0.2f}"
         for _,_,confidence,  class_id,  _,
         in detections]
-        print(self.labels)
+        #print(self.labels)
  
         c = 0
         images = {}

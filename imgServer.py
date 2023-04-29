@@ -1,3 +1,4 @@
+import json
 import threading
 import cv2
 import socket
@@ -10,9 +11,11 @@ from crop_images__callback import OnNewCroppedImages
 running = True
 client = None
 
+emptyMessage = json.dumps({ "command": "" }).encode()
+queue = []
+
 def on_new_client(clientsocket,addr):
-    global client, running
-    client = clientsocket
+    global running
 
     print("Connected to: " + str(addr))
     while running:
@@ -28,12 +31,11 @@ def on_new_client(clientsocket,addr):
             img = getVisionDetector().runDetector(img, OnNewCroppedImages)
             
             cv2.imshow('Img Server', img)
+
         except Exception as e:
             print(e)
-            continue
         
-        if cv2.waitKey(5) & 0xFF == 27:
-            break
+        sendInternal()
 
     cv2.destroyAllWindows()
     clientsocket.close()
@@ -42,11 +44,25 @@ def closeClient():
     global running, client
     running = False
 
+def sendInternal():
+    global queue, client
+    if (len(queue) == 0):
+        client.send(emptyMessage)
+    
+    try:
+        msg = queue[0]
+        queue = queue[1:]
+        client.send(msg)
+    except Exception:
+        client.send(emptyMessage)
+
+
 def send(msg):
-    global client
-    client.send(msg)
+    global queue
+    queue.append(msg)
 
 def initImgServer():
+    global client
     s = socket.socket()
     ip = getValue("IP")
     port = int(getValue("PORT"))
@@ -57,6 +73,7 @@ def initImgServer():
     while True:
         Loop()
         c, addr = s.accept()   
+        client = c
         threading.Thread(target=on_new_client, args=(c,addr)).start()
-        
+    
     s.close()

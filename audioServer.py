@@ -27,7 +27,7 @@ def start_tcp_server_thread():
                 if not audio_data:
                     break
 
-                print(f"Received audio data: {audio_data}")
+                #print(f"Received audio data: {audio_data}")
 
         finally:
             connection.close()
