@@ -46,7 +46,6 @@ class ObjectDetection:
         for result in results:
             boxes = result.boxes.cpu().numpy()
  
-            print(boxes.cls)
             if (boxes.cls.size == 0):
                 continue
  

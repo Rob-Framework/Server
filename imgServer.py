@@ -1,4 +1,3 @@
-import json
 import threading
 import cv2
 import socket
@@ -10,9 +9,6 @@ from crop_images__callback import OnNewCroppedImages
 
 running = True
 client = None
-
-emptyMessage = json.dumps({ "command": "" }).encode()
-queue = []
 
 def on_new_client(clientsocket,addr):
     global running
@@ -34,8 +30,6 @@ def on_new_client(clientsocket,addr):
 
         except Exception as e:
             print(e)
-        
-        sendInternal()
 
     cv2.destroyAllWindows()
     clientsocket.close()
@@ -43,19 +37,6 @@ def on_new_client(clientsocket,addr):
 def closeClient():
     global running, client
     running = False
-
-def sendInternal():
-    global queue, client
-    if (len(queue) == 0):
-        client.send(emptyMessage)
-    
-    try:
-        msg = queue[0]
-        queue = queue[1:]
-        client.send(msg)
-    except Exception:
-        client.send(emptyMessage)
-
 
 def send(msg):
     global queue

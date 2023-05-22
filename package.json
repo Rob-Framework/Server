@@ -1,0 +1,12 @@
+{
+  "name": "robclient",
+  "version": "1.0.0",
+  "description": "* Client runs on `Raspberry pi 4` and `Arduino Mega`\r * Clone the repository - `git clone https://github.com/Rob-Framework/Client`\r * Rename `.env.template` to `.env`\r * Set the right values in the .env\r * Run `python main.py`",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
