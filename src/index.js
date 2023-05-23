@@ -1,57 +1,47 @@
 import PyConnect from "./pyconnect.js";
 import tcpClient from "./tcpClient.js";
 import tcpServer from "./tcpServer.js";
-import readline from "readline";
+import dotenv from "dotenv";
 
-let input = "";
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-process.stdin.on("keypress", (str, key) => {
-  if (key.name === "return") {
-    const cmd = input;
-    let data = {};
-    if (
-      cmd == "forward" ||
-      cmd == "backward" ||
-      cmd == "left" ||
-      cmd == "right" ||
-      cmd == "stop" ||
-      cmd == "break" ||
-      cmd == "slow_stop"
-    ) {
-      data = { command: cmd };
-    } else if (cmd.startsWith("move_hand")) {
-      split = cmd.split(" ");
-      cmdObj = {
-        command: "move_hand",
-        movement: split[1],
-        servo: split[2],
-      };
-      data = cmdObj;
-    } else {
-      data = { command: "unknown" };
-    }
+dotenv.config()
+process.stdin.resume();
+process.stdin.setEncoding("utf8");
 
-    tcpServer.getInstance.socket.write(
-      JSON.stringify({ packetId: 0, data: data })
-    );
-    input = "";
-  } else if (key.name === "backspace") {
-    input = input.slice(0, -1);
-  }
-  if (key.ctrl && key.name === "c") {
-    process.exit();
+process.stdin.on("data", function (text) {
+  const cmd = text.trim();
+  console.log("trying to send:", cmd);
+  let data = {};
+  if (
+    cmd == "forward" ||
+    cmd == "backward" ||
+    cmd == "left" ||
+    cmd == "right" ||
+    cmd == "stop" ||
+    cmd == "break" ||
+    cmd == "slow_stop"
+  ) {
+    data = { command: cmd };
+  } else if (cmd.startsWith("move_hand")) {
+    split = cmd.split(" ");
+    cmdObj = {
+      command: "move_hand",
+      movement: split[1],
+      servo: split[2],
+    };
+    data = cmdObj;
   } else {
-    input += str;
+    console.log("got unknow command: ", cmd);
+    data = { command: "unknown" };
   }
 
-  console.log(input);
+  const cmdData = { packetId: 0, data: data };
+  tcpServer.getInstance.socket.write(JSON.stringify(cmdData));
 });
 
 (async function () {
   await PyConnect.invoke(async function () {
     await new tcpClient().init("127.0.0.1", 7781);
-    await new tcpServer().init("127.0.0.1", 7782);
+    await new tcpServer().init("0.0.0.0", process.env.NODE_SERVER_PORT);
   });
 })();
 

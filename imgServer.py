@@ -29,7 +29,8 @@ def on_new_client(clientsocket,addr):
             cv2.imshow('Img Server', img)
 
         except Exception as e:
-            print(e)
+            #print(e)
+            pass
 
     cv2.destroyAllWindows()
     clientsocket.close()

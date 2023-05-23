@@ -21,7 +21,7 @@ export default class tcpClient {
       const _data = resp["data"];
 
       if (packetId == 0) {
-        console.log("got command: ", _data);
+        //console.log("got command: ", _data);
       }
     });
   }

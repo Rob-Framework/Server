@@ -19,7 +19,7 @@ export default class tcpServer {
         const _data = resp["data"];
 
         if (packetId == 1) {
-          console.log("got sensor data: " + _data);
+          //console.log("got sensor data: ", _data);
         }
       });
     });
