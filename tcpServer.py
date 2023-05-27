@@ -1,6 +1,7 @@
 import socket
 from threading import Thread
 import json
+import handlers.location as location
 
 class tcpServer:
     def __init__(self, host, port):
@@ -26,6 +27,12 @@ class tcpServer:
                     continue
                 packetId = data['packetId']
                 _data = data['data']
+
+                if packetId == 2:
+                    long = _data['long']
+                    lat = _data['lat']
+
+                    loc = location.get_location(long, lat)
 
     def sendMessage(self, packetId, data):
         if (hasattr(self, 'conn')):

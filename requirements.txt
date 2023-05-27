@@ -13,3 +13,5 @@ clip_interrogator
 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 open3d
 matplotlib
+geocoder
+geopy

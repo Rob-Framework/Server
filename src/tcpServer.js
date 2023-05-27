@@ -1,4 +1,5 @@
 import * as net from "net";
+import tcpClient from "./tcpClient.js";
 
 export default class tcpServer {
   static getInstance;
@@ -20,6 +21,10 @@ export default class tcpServer {
 
         if (packetId == 1) {
           //console.log("got sensor data: ", _data);
+
+          if (_data["sensor"] == "location") {
+            tcpClient.getInstance.sendMessage(2, _data["data"]);
+          }
         }
       });
     });

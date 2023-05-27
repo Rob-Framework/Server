@@ -26,7 +26,8 @@ def on_new_client(clientsocket,addr):
 
             img = cv2.imdecode(data, cv2.IMREAD_COLOR)
 
-            slamLoop(img)
+            slamImg = img.copy()
+            slamLoop(slamImg)
             img = getVisionDetector().runDetector(img, OnNewCroppedImages)
             
             cv2.imshow('Img Server', img)
