@@ -6,6 +6,7 @@ from handlers.vision_detector import getVisionDetector
 from envReader import getValue
 from mainLoop import Loop
 from crop_images__callback import OnNewCroppedImages
+from slam_handler.slammain import loop as slamLoop
 
 running = True
 client = None
@@ -24,6 +25,8 @@ def on_new_client(clientsocket,addr):
             data = pickle.loads(data)
 
             img = cv2.imdecode(data, cv2.IMREAD_COLOR)
+
+            slamLoop(img)
             img = getVisionDetector().runDetector(img, OnNewCroppedImages)
             
             cv2.imshow('Img Server', img)
