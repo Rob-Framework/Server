@@ -2,11 +2,12 @@ import threading
 import cv2
 import socket
 import pickle
-from handlers.vision_detector import getVisionDetector
+from vision.vision_detector import getVisionDetector
 from envReader import getValue
 from mainLoop import Loop
-from crop_images__callback import OnNewCroppedImages
+from vision.crop_images__callback import OnNewCroppedImages, OnNewFireImages
 from slam_handler.slammain import loop as slamLoop
+from vision.fire_detector import getVisionDetector as getFireDetector
 
 running = True
 client = None
@@ -28,6 +29,7 @@ def on_new_client(clientsocket,addr):
 
             slamImg = img.copy()
             slamLoop(slamImg)
+            fireImg = getFireDetector().runDetector(img, OnNewFireImages)
             img = getVisionDetector().runDetector(img, OnNewCroppedImages)
             
             cv2.imshow('Img Server', img)
